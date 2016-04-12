@@ -1,0 +1,14 @@
+{
+  "name": "LarryLitterbugServer",
+  "version": "0.0.1",
+  "private": true,
+
+  "dependencies": {
+    "body-parser": "*",
+    "colors": "*",
+    "express": "*",
+    "extend": "*",
+    "minimist": "*",
+    "sqlite3": "*"
+  }
+}
