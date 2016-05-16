@@ -12,12 +12,12 @@ var common_conf = {
 var conf = {
     production: {
         port: args.port || "3000",
-        database: args.sqlite || "./llProductionDB.db"
+        database: args.sqlite || "./llProductionDB.sqlite"
     },
 
     test: {
         port: args.port || "3001",
-        database: args.sqlite || "./llTestDB.db"
+        database: args.sqlite || "./llTestDB.sqlite"
     }
 };
 

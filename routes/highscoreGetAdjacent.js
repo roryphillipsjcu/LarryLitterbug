@@ -1,4 +1,4 @@
-module.exports = function(server, db, colors){
+module.exports = function(server, db, logger){
 
     function getHighscoreAdjacent(req, res, next){
         console.log("Get High Score Called");

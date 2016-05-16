@@ -9,6 +9,7 @@
     "express": "*",
     "extend": "*",
     "minimist": "*",
-    "sqlite3": "*"
+    "sqlite3": "*",
+    "sequelize": "*"
   }
 }

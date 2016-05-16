@@ -11,19 +11,13 @@ var logger = require('./logger.js');
 var dbFile = conf.database;
 var exists = fs.existsSync(dbFile);
 
-//var sqlite3 = require('sqlite3').verbose();
-//var db = new sqlite3.Database(dbFile);
-//db.serialize(function() {
-//   if(!exists){
-//       db.run("CREATE TABLE highscores(ID INT NOT NULL, USERNAME VARCHAR(20) NOT NULL, SCORE INT NOT NULL, PRIMARY KEY(ID))");
-//   }
-//
-//    db.run("INSERT INTO highscores VALUES (10, 'balls', 100)");
-//
-//    console.log(db.run("SELECT * FROM highscores"));
-//});
+var Sequelize = require('sequelize');
+var sequelize = new Sequelize('database', 'username', 'password', {
+    dialect: 'sqlite',
+    storage: 'llTestDB.sqlite'
+});
 
-var db;
+var db = sequelize;
 
 logger.serverInfo(conf.name, conf.version, conf.environment);
 
