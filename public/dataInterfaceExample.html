@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="dataInterface.js"></script>
+</head>
+<body>
+
+<h1>LarryLitterbug Admin Page</h1>
+
+<h2><strong>Highscores</strong></h2>
+<h3>Add New Highscore</h3>
+<form id="addHighscore" action="javascript:postHighscore();">
+    <label for="highscoreName">Name: </label>
+    <input id="highscoreName" name="highscoreName" type="text">
+    <br>
+    <label for="highscoreScore">Score: </label>
+    <input id="highscoreScore" name="highscoreScore" type="number">
+    <br>
+    <input id="highscoreSubmit" type="submit" name="submit">
+</form>
+
+<h3>View All Highscores</h3>
+<button onclick="getAllHighscores()">Get All Highscores</button>
+<table id="scoreTable">
+</table>
+
+<h2><strong>Facts</strong></h2>
+<h3>Add New Fact</h3>
+<form id="addFact" action="javascript:postFact();">
+    <label for="factTitle">Title: </label>
+    <input id="factTitle" name="factTitle" type="text">
+    <br>
+    <label for="factDescription">Description: </label>
+    <textarea id="factDescription" name="factDescription" type="text"></textarea>
+    <br>
+    <input id="factSubmit" type="submit" name="submit">
+</form>
+
+<h3>View All Facts</h3>
+<button onclick="getAllFacts()">Get All Facts</button>
+<table id="factTable">
+
+</table>
+</body>
+</html>

@@ -1,0 +1,14 @@
+body {
+    background-color:lightblue;
+}
+#displayCanvas {
+    border: dotted 1px black;
+    background-color:darkblue;
+}
+textarea {
+    width: 150px;
+    height: 800px;
+    resize: none;
+    overflow-y: scroll;
+    text-align: center
+}

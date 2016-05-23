@@ -1,7 +1,7 @@
 function getAllHighscores(){
     var highscores = {};
-    var table = document.getElementById('scoreTable');
-    table.innerHTML = "";
+    var list = document.getElementById('scoreList');
+    list.innerHTML = "";
 
     var request = new XMLHttpRequest();
 
@@ -12,13 +12,10 @@ function getAllHighscores(){
                 highscores = JSON.parse(request.responseText);
 
                 highscores.forEach(function (highscore){
-                    var row = table.insertRow(0);
-
-                    var name = row.insertCell(0);
-                    var score = row.insertCell(1);
-
-                    name.innerHTML = highscore.name;
-                    score.innerHTML = highscore.score;
+                    var toPrint = "";
+                    toPrint += (highscore.name + ": ");
+                    toPrint += (highscore.score + " points\n");
+                    list.innerHTML += toPrint;
                 });
 
             } else {
@@ -31,10 +28,10 @@ function getAllHighscores(){
     request.send(null);
 }
 
-function getAllFacts(){
+function getRandomFact(){
     var facts = [];
-    var table = document.getElementById('factTable');
-    table.innerHTML = "";
+    var h3 = document.getElementById("factH3");
+    h3.innerHTML = "";
 
     var request = new XMLHttpRequest();
 
@@ -43,16 +40,10 @@ function getAllFacts(){
             if (request.status === 200){
                 document.body.className = 'ok';
                 facts = JSON.parse(request.responseText);
-                console.log(facts);
-                facts.forEach(function (fact){
-                    var row = table.insertRow(0);
+                var len = facts.length;
+                var index = (Math.random() * len) + 1;
 
-                    var title = row.insertCell(0);
-                    var description = row.insertCell(1);
-
-                    title.innerHTML = fact.title;
-                    description.innerHTML = fact.description;
-                });
+                h3.innerHTML = facts[Math.floor(index)].description;
             } else {
                 document.body.className = 'error';
             }
