@@ -39,7 +39,7 @@ fs.readdirSync(routes).forEach(function (file){
     logger.routeLoad(file);
 });
 
-server.listen(config.port, function(){
+server.listen(80, function(){
     logger.serverListen(config.port);
 });
 

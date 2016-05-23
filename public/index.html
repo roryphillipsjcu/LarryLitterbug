@@ -16,14 +16,20 @@
 
 <center>
     <h1>Larry Litterbug</h1>
-    <h3>Interesting Fact</h3>
-    <h4 id="factH3"></h4>
-    <script>
-        getRandomFact();
-    </script>
+
+    <h3>Submit Highscore</h3>
+    <form action="javascript:postHighscore();">
+        <label for="highscoreName">
+            Name:
+        </label>
+        <input id="highscoreName" name="highscoreName" type="text">
+        <input type="submit" name="submit" id="submit">
+    </form>
 
     <textarea readonly id="scoreList">
     </textarea>
+
+
     <script>
         getAllHighscores();
     </script>
@@ -32,12 +38,7 @@
     <canvas id="displayCanvas" width="600px" height="800px">Your browser does not support HTML5 Canvas.</canvas>
     <script src="game.js"></script>
 
-    <form>
-        <label for="highscoreName">
-            Name:
-        </label>
-        <input id="highscoreName" type="text">
-    </form>
+
 </center>
 </body>
 </html>

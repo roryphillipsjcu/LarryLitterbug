@@ -20,6 +20,7 @@ var menuButton;
 var scoreTextArea;
 
 var paused = true;
+var gameOver = false;
 
 window.onload = function() {
     canvasArea = new createjs.Stage('displayCanvas');
@@ -128,6 +129,7 @@ function showInstructions() {
 function startGame(){
     score = 0;
     paused = false;
+    gameOver = false;
     updateScoreText();
 
     clear();
@@ -283,7 +285,7 @@ function addBag(){
     var addBagIndex = bags.length;
     bags[addBagIndex] = new createjs.Bitmap("res/game/plasticBag_100.png");
     bags[addBagIndex].x = Math.floor(Math.random() * 500) + 20;
-    bags[addBagIndex].y = 120;
+    bags[addBagIndex].y = Math.floor(Math.random() * 200) + 120;
     bags[addBagIndex].scaleX = 0.3;
     bags[addBagIndex].scaleY = 0.3;
 
@@ -334,6 +336,10 @@ function moveBag(){
                     lifeCount--;
                     bagsremoved[i] = true;
                     bags[i].gameObjectActive = false;
+                    addBag();
+                    if (Math.floor(Math.random() * 5) == 1){
+                        addBag();
+                    }
                 }
                 checkGameOver();
                 canvasArea.removeChild(bags[i]);
@@ -402,7 +408,8 @@ function removeBag(event){
 
 function checkGameOver(){
     if (lifeCount <= 0){
-        console.log("GameOver");
+        gameOver = true;
+        showEndScreen();
     }
 }
 
@@ -413,7 +420,7 @@ function showEndScreen(){
 }
 
 function tick(){
-    if (!paused){
+    if (!paused && !gameOver){
         moveFish();
         moveBag();
         checkFishCollision();

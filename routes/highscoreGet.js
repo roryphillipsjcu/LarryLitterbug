@@ -20,7 +20,7 @@ module.exports = function(server, db, logger){
 
         Highscore.findAll({
             order: [
-                ['score', 'ASC']
+                ['score', 'DESC']
             ]
         }).then(function (results){
             results.forEach(function (result){

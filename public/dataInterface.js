@@ -56,11 +56,11 @@ function getRandomFact(){
 
 function postHighscore(){
     var name = document.getElementById("highscoreName").value;
-    var score = document.getElementById("highscoreScore").value;
+    var gamescore = score;
 
     var data = {
         name: name,
-        score: score
+        score: gamescore
     };
 
     var jsonString = JSON.stringify(data);
@@ -71,15 +71,18 @@ function postHighscore(){
         if (request.readyState === 4){
             if (request.status === 200){
                 document.body.className = 'ok';
+                getAllHighscores();
             } else {
                 document.body.className = 'error';
             }
         }
     };
+    if (gameOver){
+        request.open('POST', 'http://localhost:3001/addHighscore', true);
+        request.setRequestHeader('Content-type', 'application/json');
+        request.send(jsonString);
+    }
 
-    request.open('POST', 'http://localhost:3001/addHighscore', true);
-    request.setRequestHeader('Content-type', 'application/json');
-    request.send(jsonString);
 }
 
 function postFact(){
