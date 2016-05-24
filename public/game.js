@@ -46,7 +46,7 @@ function clear(){
 function drawHome(){
     clear();
 
-    var playButton = new createjs.Bitmap("res/buttons/playButton.png");
+    var playButton = new createjs.Bitmap("res/buttons/PlayButton.png");
     playButton.scaleX = 0.8;
     playButton.scaleY = 0.8;
     playButton.x = 200;
@@ -56,12 +56,12 @@ function drawHome(){
         startGame();
     });
     playButton.on("mouseover", function(){
-        playButton.image.src = "res/buttons/playButton_Hovered.png";
+        playButton.image.src = "res/buttons/PlayButton_Hovered.png";
         playButton.x = 180;
         canvasArea.update();
     });
     playButton.on("mouseout", function(){
-       playButton.image.src = "res/buttons/playButton.png";
+       playButton.image.src = "res/buttons/PlayButton.png";
         playButton.x = 200;
         canvasArea.update();
     });
@@ -257,7 +257,7 @@ function drawBags(bagNum){
     bags = [];
 
     for (var i = 0; i < numberOfBags; i++){
-        bags[i] = new createjs.Bitmap("res/game/plasticBag_100.png");
+        bags[i] = new createjs.Bitmap("res/game/PlasticBag_100.png");
         bags[i].x = bagSpawnX;
         bags[i].y = bagSpawnY;
         bags[i].scaleX = 0.3;
@@ -286,7 +286,7 @@ function addBag(){
     numberOfBags++;
 
     var addBagIndex = bags.length;
-    bags[addBagIndex] = new createjs.Bitmap("res/game/plasticBag_100.png");
+    bags[addBagIndex] = new createjs.Bitmap("res/game/PlasticBag_100.png");
     bags[addBagIndex].x = bagSpawnX;
     bags[addBagIndex].y = bagSpawnY;
     bags[addBagIndex].scaleX = 0.3;
@@ -459,13 +459,13 @@ function showEndScreen(){
 		postHighscore(person);			
 	}
 	
-	var informationFactString = getRandomFact();
+	//var informationFactString = getRandomFact();
 	
-	var informationFact = new createjs.Text(informationFactString);
-	informationFact.x = 30;
-    informationFact.y = 80;
+	//var informationFact = new createjs.Text(informationFactString);
+	//informationFact.x = 30;
+    //informationFact.y = 80;
 	
-	canvasArea.addChild(informationFact);
+	//canvasArea.addChild(informationFact);
 	
 	
 	var playAgainButton = new createjs.Bitmap("res/buttons/PlayAgainButton.png");
@@ -487,21 +487,21 @@ function showEndScreen(){
     });
 	
 	
-	var continueButton = new createjs.Bitmap("res/buttons/continueButton.png");
+	var continueButton = new createjs.Bitmap("res/buttons/ContinueButton.png");
     continueButton.x = 200;
     continueButton.y = 500;
 	
 	canvasArea.addChild(continueButton);
 	
 	continueButton.on("click", function(){
-        startGame();
+        showSummary();
     });
     continueButton.on("mouseover", function(){
-        continueButton.image.src = "res/buttons/continueButton_Hovered.png";
+        continueButton.image.src = "res/buttons/ContinueButton_Hovered.png";
         continueButton.x = 180;
     });
     continueButton.on("mouseout", function(){
-		continueButton.image.src = "res/buttons/continueButton.png";
+		continueButton.image.src = "res/buttons/ContinueButton.png";
         continueButton.x = 200;
     });
 	
@@ -510,6 +510,32 @@ function showEndScreen(){
 function showSummary() {
 	
 	clear();
+	
+	scoreString = "Score: " + score;
+	
+	var scoreText = new createjs.Text(scoreString);
+	scoreText.x = 300;
+    scoreText.y = 30;
+
+	canvasArea.addChild(scoreText);
+	
+	var menuButton = new createjs.Bitmap("res/buttons/MenuButton.png");
+    menuButton.x = 200;
+    menuButton.y = 500;
+	
+	canvasArea.addChild(menuButton);
+	
+	menuButton.on("click", function(){
+        showSummary();
+    });
+    menuButton.on("mouseover", function(){
+        menuButton.image.src = "res/buttons/MenuButton_Hovered.png";
+        menuButton.x = 180;
+    });
+    menuButton.on("mouseout", function(){
+		menuButton.image.src = "res/buttons/MenuButton.png";
+        menuButton.x = 200;
+    });
 	
 	//Show Score
 	//Show 	
