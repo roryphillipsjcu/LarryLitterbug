@@ -1,3 +1,10 @@
+var address = "http://ec2-52-64-109-225.ap-southeast-2.compute.amazonaws.com";
+var retrievedRandomFact = "";
+
+function retrieveRandomFactString(){
+	return retrievedRandomFact;
+}
+
 function getAllHighscores(){
     var highscores = {};
     var list = document.getElementById('scoreList');
@@ -24,15 +31,13 @@ function getAllHighscores(){
         }
     };
 
-    request.open('GET', 'http://localhost:3001/getHighscore', true);
+    request.open('GET', address + '/getHighscore', true);
     request.send(null);
 }
 
 function getRandomFact(){
     var facts = [];
-    var h3 = document.getElementById("factH3");
-    h3.innerHTML = "";
-
+    
     var request = new XMLHttpRequest();
 
     request.onreadystatechange = function() {
@@ -40,17 +45,19 @@ function getRandomFact(){
             if (request.status === 200){
                 document.body.className = 'ok';
                 facts = JSON.parse(request.responseText);
-                var len = facts.length;
-                var index = (Math.random() * len) + 1;
+                console.log(facts);
+		var len = facts.length;
+                var index = Math.floor((Math.random() * len));
 
-                return facts[Math.floor(index)].description;
+		console.log(facts[index]);
+                retrievedRandomFact = facts[index].description;
             } else {
                 document.body.className = 'error';
             }
         }
     };
 
-    request.open('GET', 'http://localhost:3001/getFact', true);
+    request.open('GET', address + '/getFact', true);
     request.send(null);
 }
 
@@ -77,7 +84,7 @@ function postHighscore(name){
         }
     };
     if (gameOver){
-        request.open('POST', 'http://localhost:3001/addHighscore', true);
+        request.open('POST', address + '/addHighscore', true);
         request.setRequestHeader('Content-type', 'application/json');
         request.send(jsonString);
     }
@@ -107,7 +114,7 @@ function postFact(){
         }
     };
 
-    request.open('POST', 'http://localhost:3001/addFact', true);
+    request.open('POST', address + '/addFact', true);
     request.setRequestHeader('Content-type', 'application/json');
     request.send(jsonString);
 }

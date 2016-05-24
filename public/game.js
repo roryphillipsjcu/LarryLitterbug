@@ -460,13 +460,15 @@ function showEndScreen(){
 		postHighscore(person);			
 	}
 	
-	//var informationFactString = getRandomFact();
+	getRandomFact();
+	var informationFactString = retrieveRandomFact();
+	console.log(informationFactString);
 	
-	//var informationFact = new createjs.Text(informationFactString);
-	//informationFact.x = 30;
-    //informationFact.y = 80;
+	var informationFact = new createjs.Text(informationFactString, "50px Arial; text-align: center", "#ff7700");
+	informationFact.x = (300 - (informationFact.getMeasuredWidth() * 0.5));
+    	informationFact.y = 80;
 	
-	//canvasArea.addChild(informationFact);
+	canvasArea.addChild(informationFact);
 	
 	
 	var playAgainButton = new createjs.Bitmap("res/buttons/PlayAgainButton.png");
@@ -514,7 +516,7 @@ function showSummary() {
 	
 	scoreString = "Score: " + score;
 	
-	var scoreText = new createjs.Text(scoreString);
+	var scoreText = new createjs.Text(scoreString, "50px Arial", "#ff7700");
 	scoreText.x = 300;
     scoreText.y = 30;
 
