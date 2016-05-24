@@ -136,6 +136,7 @@ function showInstructions() {
 function startGame(){
 	lifeCount = 3;
     score = 0;
+	bagSpeed = 0.2;
     paused = false;
     gameOver = false;
     updateScoreText();
