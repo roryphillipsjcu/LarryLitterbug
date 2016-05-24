@@ -1,7 +1,7 @@
 var numberOfFish = 5;
-var lifeCount = 5;
+var lifeCount = 3;
 
-var numberOfBags = 0;
+var numberOfBags = 5;
 var score;
 var scoreText;
 
@@ -18,6 +18,13 @@ var removedFish = [];
 var pauseButton;
 var menuButton;
 var scoreTextArea;
+
+var gameTime = 0;
+
+var bagSpawnX = 300;
+var bagSpawnY = 40;
+
+var bagSpeed = 0.2;
 
 var paused = true;
 var gameOver = false;
@@ -127,6 +134,7 @@ function showInstructions() {
 }
 
 function startGame(){
+	lifeCount = 3;
     score = 0;
     paused = false;
     gameOver = false;
@@ -170,7 +178,7 @@ function startGame(){
     });
 
     drawFish(numberOfFish);
-    drawBags(5);
+    drawBags(numberOfBags);
 
     canvasArea.update();
 }
@@ -250,8 +258,8 @@ function drawBags(bagNum){
 
     for (var i = 0; i < numberOfBags; i++){
         bags[i] = new createjs.Bitmap("res/game/plasticBag_100.png");
-        bags[i].x = Math.floor(Math.random() * 500) + 20;
-        bags[i].y = 120;
+        bags[i].x = bagSpawnX;
+        bags[i].y = bagSpawnY;
         bags[i].scaleX = 0.3;
         bags[i].scaleY = 0.3;
         bags[i].gameObjectActive = true;
@@ -269,11 +277,6 @@ function drawBags(bagNum){
             removeBag(event);
         });
 
-        if (bags[i].y <= 50) {
-            bags[i].y -= 3;
-            bags[i].x += 5;
-        }
-
         bagsremoved[i] = false;
 
     }
@@ -284,8 +287,8 @@ function addBag(){
 
     var addBagIndex = bags.length;
     bags[addBagIndex] = new createjs.Bitmap("res/game/plasticBag_100.png");
-    bags[addBagIndex].x = Math.floor(Math.random() * 500) + 20;
-    bags[addBagIndex].y = Math.floor(Math.random() * 200) + 120;
+    bags[addBagIndex].x = bagSpawnX;
+    bags[addBagIndex].y = bagSpawnY;
     bags[addBagIndex].scaleX = 0.3;
     bags[addBagIndex].scaleY = 0.3;
 
@@ -304,17 +307,35 @@ function addBag(){
         removeBag(event);
     });
 
-    if (bags[addBagIndex].y <= 50) {
-        bags[addBagIndex].y -= 3;
-        bags[addBagIndex].x += 5;
-    }
-
     bagsremoved[addBagIndex] = false;
 }
 
 function moveBag(){
     for (var i = 0; i < bags.length; i++){
         if (bags[i].gameObjectActive == true){
+			
+			if (bags[i].y <= 60) {
+         	   bags[i].y += 1;
+			   continue;
+		    }
+						
+			if (((gameTime % 70) == 0) & (gameTime != 0)) {
+				var randomNum = Math.floor(Math.random() * (2 + 1));
+				
+				switch (randomNum) {
+					case 0:
+						bags[i].movementTypeX = 'left';
+						break;
+					case 1:
+						bags[i].movementTypeX = 'right';
+						break;
+					case 2:
+						bags[i].movementTypeX = 'straight';
+						break; 
+				}
+			}
+			
+			
             if (bags[i].x >= 530){
                 bags[i].movementTypeX = 'left';
             }
@@ -324,11 +345,14 @@ function moveBag(){
 
             if (bags[i].movementTypeX == 'right'){
                 bags[i].x += (Math.random()) + 2;
-            } else {
+            } else if (bags[i].movementTypeX == 'left'){
                 bags[i].x -= (Math.random()) + 2;
-            }
+            } else {
+				//Down Straight
+			}
+			
 
-            bags[i].y += (Math.random() * 0.1) + 0.4;
+            bags[i].y += bagSpeed;
 
             if (bags[i].y >= (canvasHeight - 50)){
                 numberOfBags -= 1;
@@ -382,12 +406,19 @@ function moveFish(){
 }
 
 function checkFishCollision(){
-    for (var i = 0; i < numberOfFish; i++){
-        for (var k = 0; k < numberOfBags; k++){
+			
+	for (var i = 0; i < fish.length; i++){
+    	for (var k = 0; k < bags.length; k++){
+			
+			if (bagsremoved[k])
+				continue;
+			
             var collision = ndgmr.checkPixelCollision(fish[i], bags[k]);
-            if (collision != false){
+			
+			if (collision){
                 canvasArea.removeChild(fish[i]);
-                canvasArea.removeChild(bags[i]);
+                canvasArea.removeChild(bags[k]);
+				bagsremoved[k] = true;
                 lifeCount--;
                 checkGameOver();
             }
@@ -398,6 +429,7 @@ function checkFishCollision(){
 function removeBag(event){
     canvasArea.removeChild(event.target);
     bags[event.target.index].gameObjectActive = false;
+	bagsremoved[event.target.index] = true;
     numberOfBags -= 1;
     score++;
     addBag();
@@ -407,25 +439,103 @@ function removeBag(event){
 }
 
 function checkGameOver(){
-    if (lifeCount <= 0){
+    if (lifeCount == 0){
         gameOver = true;
         showEndScreen();
     }
 }
 
 function showEndScreen(){
-    var playAgainButton = new createjs.Bitmap("res/buttons/PlayAgainButton.png");
-    playAgainButton.x = 0;
-    playAgainButton.y = 0;
+	clear();
+	
+	var gameOverText = new createjs.Text("Game Over");
+	gameOverText.x = 300;
+    gameOverText.y = 30;
+
+	canvasArea.addChild(gameOverText);
+	
+	var person = prompt("Please enter name", "");
+	if (person != null){
+		postHighscore(person);			
+	}
+	
+	var informationFactString = getRandomFact();
+	
+	var informationFact = new createjs.Text(informationFactString);
+	informationFact.x = 30;
+    informationFact.y = 80;
+	
+	canvasArea.addChild(informationFact);
+	
+	
+	var playAgainButton = new createjs.Bitmap("res/buttons/PlayAgainButton.png");
+    playAgainButton.x = 180;
+    playAgainButton.y = 180;
+	
+	canvasArea.addChild(playAgainButton);
+	
+	playAgainButton.on("click", function(){
+        startGame();
+    });
+    playAgainButton.on("mouseover", function(){
+        playAgainButton.image.src = "res/buttons/PlayAgainButton_Hovered.png";
+        playAgainButton.x = 180;
+    });
+    playAgainButton.on("mouseout", function(){
+		playAgainButton.image.src = "res/buttons/PlayAgainButton.png";
+        playAgainButton.x = 200;
+    });
+	
+	
+	var continueButton = new createjs.Bitmap("res/buttons/continueButton.png");
+    continueButton.x = 200;
+    continueButton.y = 500;
+	
+	canvasArea.addChild(continueButton);
+	
+	continueButton.on("click", function(){
+        startGame();
+    });
+    continueButton.on("mouseover", function(){
+        continueButton.image.src = "res/buttons/continueButton_Hovered.png";
+        continueButton.x = 180;
+    });
+    continueButton.on("mouseout", function(){
+		continueButton.image.src = "res/buttons/continueButton.png";
+        continueButton.x = 200;
+    });
+	
+}
+
+function showSummary() {
+	
+	clear();
+	
+	//Show Score
+	//Show 	
+	
+}
+
+function updateBagSpeed() {
+
+	bagSpeed += 0.001;
+	
 }
 
 function tick(){
+	
+	gameTime += 1;
+	
     if (!paused && !gameOver){
         moveFish();
         moveBag();
         checkFishCollision();
         updateScoreText();
         scoreTextArea.text = scoreText;
-    }
+    	
+		updateBagSpeed();
+	}
+	
+	
     canvasArea.update();
 }

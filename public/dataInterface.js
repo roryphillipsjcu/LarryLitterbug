@@ -43,7 +43,7 @@ function getRandomFact(){
                 var len = facts.length;
                 var index = (Math.random() * len) + 1;
 
-                h3.innerHTML = facts[Math.floor(index)].description;
+                return facts[Math.floor(index)].description;
             } else {
                 document.body.className = 'error';
             }
@@ -54,8 +54,7 @@ function getRandomFact(){
     request.send(null);
 }
 
-function postHighscore(){
-    var name = document.getElementById("highscoreName").value;
+function postHighscore(name){
     var gamescore = score;
 
     var data = {
