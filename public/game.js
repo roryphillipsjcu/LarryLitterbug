@@ -526,7 +526,7 @@ function showSummary() {
 	canvasArea.addChild(menuButton);
 	
 	menuButton.on("click", function(){
-        showSummary();
+        drawHome();
     });
     menuButton.on("mouseover", function(){
         menuButton.image.src = "res/buttons/MenuButton_Hovered.png";
