@@ -31,5 +31,5 @@ module.exports = function(server, db, logger){
 
     //Only uncomment if you are recreating the database.
     //Otherwise will be abused
-    //server.get('/popdb', populateDB);
+   //server.get('/popdb', populateDB);
 };

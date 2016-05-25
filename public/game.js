@@ -29,6 +29,8 @@ var bagSpeed = 0.2;
 var paused = true;
 var gameOver = false;
 
+var person;
+
 window.onload = function() {
     canvasArea = new createjs.Stage('displayCanvas');
     canvasArea.enableMouseOver(50);
@@ -36,7 +38,6 @@ window.onload = function() {
 
     createjs.Ticker.addEventListener("tick", tick);
     drawHome();
-
 };
 
 function clear(){
@@ -99,10 +100,11 @@ function showInstructions() {
     canvasArea.addChild(instructionsTitleText);
 
     var instructionsText = new createjs.Text(
-        "Earn points by removing litter from the ocean\n" +
-        "But don't let the litter touch the fish\n" +
-        "or else they'll die\n\n" +
-        "You have 3 lives",
+        "Earn points by removing plastic bags from the ocean\n" +
+        "But don't let the bags touch the fish\n" +
+        "or else they'll die\n" +
+	"Simply click on a bag to destroy it and protect the environment\n" +
+        "You have 3 lives, if a bag touches a fish you will lose a life",
         "25px Arial",
         "#ff7700");
     instructionsText.x = 70;
@@ -140,8 +142,13 @@ function startGame(){
     paused = false;
     gameOver = false;
     updateScoreText();
-
+person = "";
+fish = [];
+bags = [];
+bagsremoved = [];
     clear();
+getRandomFact();
+
 
     scoreTextArea = new createjs.Text(scoreText, "30px Arial", "#ff7700");
     scoreTextArea.x = 420;
@@ -207,6 +214,7 @@ function pauseGame(){
     } else {
         pauseButton.image.src = "res/buttons/PauseButton.png";
         canvasArea.removeChild(menuButton);
+	canvasArea.update();
     }
 
     menuButton.on("click", function(){
@@ -362,7 +370,7 @@ function moveBag(){
                     bagsremoved[i] = true;
                     bags[i].gameObjectActive = false;
                     addBag();
-                    if (Math.floor(Math.random() * 5) == 1){
+                    if (Math.floor(Math.random() * 20) == 1){
                         addBag();
                     }
                 }
@@ -449,31 +457,32 @@ function checkGameOver(){
 function showEndScreen(){
 	clear();
 	
-	var gameOverText = new createjs.Text("Game Over");
-	gameOverText.x = 300;
-    gameOverText.y = 30;
+	var gameOverText = new createjs.Text("Game Over", "50px Arial", "#ff7700");
+	gameOverText.x = 180;
+    	gameOverText.y = 60;
 
 	canvasArea.addChild(gameOverText);
 	
-	var person = prompt("Please enter name", "");
-	if (person != null){
+	person = prompt("Please enter name", "");
+	if (person != null && person != ""){
 		postHighscore(person);			
 	}
 	
-	getRandomFact();
-	var informationFactString = retrieveRandomFact();
+	var informationFactString = retrieveRandomFactString();
 	console.log(informationFactString);
 	
-	var informationFact = new createjs.Text(informationFactString, "50px Arial; text-align: center", "#ff7700");
+	var informationFact = new createjs.Text(informationFactString, "16px Arial", "#ff7700");
 	informationFact.x = (300 - (informationFact.getMeasuredWidth() * 0.5));
-    	informationFact.y = 80;
+    	informationFact.y = 150;
 	
 	canvasArea.addChild(informationFact);
 	
 	
 	var playAgainButton = new createjs.Bitmap("res/buttons/PlayAgainButton.png");
-    playAgainButton.x = 180;
-    playAgainButton.y = 180;
+    	playAgainButton.x = 200;
+    	playAgainButton.y = 250;
+	playAgainButton.scaleX = 0.7;
+	playAgainButton.scaleY = 0.7;
 	
 	canvasArea.addChild(playAgainButton);
 	
@@ -482,7 +491,7 @@ function showEndScreen(){
     });
     playAgainButton.on("mouseover", function(){
         playAgainButton.image.src = "res/buttons/PlayAgainButton_Hovered.png";
-        playAgainButton.x = 180;
+        playAgainButton.x = 200;
     });
     playAgainButton.on("mouseout", function(){
 		playAgainButton.image.src = "res/buttons/PlayAgainButton.png";
@@ -491,8 +500,10 @@ function showEndScreen(){
 	
 	
 	var continueButton = new createjs.Bitmap("res/buttons/ContinueButton.png");
-    continueButton.x = 200;
-    continueButton.y = 500;
+    	continueButton.x = 200;
+    	continueButton.y = 380;
+	continueButton.scaleX = 0.7;
+	continueButton.scaleY = 0.7;
 	
 	canvasArea.addChild(continueButton);
 	
@@ -501,7 +512,7 @@ function showEndScreen(){
     });
     continueButton.on("mouseover", function(){
         continueButton.image.src = "res/buttons/ContinueButton_Hovered.png";
-        continueButton.x = 180;
+        continueButton.x = 200;
     });
     continueButton.on("mouseout", function(){
 		continueButton.image.src = "res/buttons/ContinueButton.png";
@@ -516,15 +527,23 @@ function showSummary() {
 	
 	scoreString = "Score: " + score;
 	
+	var playerNameText = new createjs.Text(person, "50px Arial", "#ff7700")
+	playerNameText.x = 240;
+	playerNameText.y = 140;
+
+	canvasArea.addChild(playerNameText);
+
 	var scoreText = new createjs.Text(scoreString, "50px Arial", "#ff7700");
-	scoreText.x = 300;
-    scoreText.y = 30;
+	scoreText.x = 200;
+    	scoreText.y = 200;
 
 	canvasArea.addChild(scoreText);
 	
 	var menuButton = new createjs.Bitmap("res/buttons/MenuButton.png");
-    menuButton.x = 200;
-    menuButton.y = 500;
+    	menuButton.x = 190;
+    	menuButton.y = 500;
+	menuButton.scaleX = 0.7;
+	menuButton.scaleY = 0.7;
 	
 	canvasArea.addChild(menuButton);
 	
@@ -533,11 +552,11 @@ function showSummary() {
     });
     menuButton.on("mouseover", function(){
         menuButton.image.src = "res/buttons/MenuButton_Hovered.png";
-        menuButton.x = 180;
+        menuButton.x = 190;
     });
     menuButton.on("mouseout", function(){
 		menuButton.image.src = "res/buttons/MenuButton.png";
-        menuButton.x = 200;
+        menuButton.x = 190;
     });
 	
 	//Show Score
